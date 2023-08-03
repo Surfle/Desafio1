@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
         List<Pessoa> chamada = new ArrayList<>();
@@ -26,6 +30,8 @@ public class Main {
             System.out.println("6 - Quantidade de pedidos");
             System.out.println("7 - Pedidos Ativos");
             System.out.println("8 - Pedidos Encerrados");
+            System.out.println("9 - Finalizar e Imprimir pedido");
+
 
             System.out.println("0 - Sair");
             int opcao = scanner.nextInt();
@@ -114,6 +120,56 @@ public class Main {
                     break;
                 case 6:
                     System.out.println("Numero de pedidos: "+pedidos.size());
+                    break;
+                case 7:
+                    for (int i = 0; i < pedidos.size(); i++){
+                        if (pedidos.get(i).isAtivo()){
+                            System.out.println("Pedido"+(i-1)+": "+pedidos.get(i).getDescricao()+
+                                    "\nCliente: "+pedidos.get(i).getPessoa().getNome());
+                        }
+                    }
+                    break;
+                case 8:
+                    for (int i = 0; i < pedidos.size(); i++){
+                        if (!pedidos.get(i).isAtivo()){
+                            System.out.println("Pedido"+(i-1)+": "+pedidos.get(i).getDescricao()+
+                                    "\nCliente: "+pedidos.get(i).getPessoa().getNome());
+                        }
+                    }
+                    break;
+                case 9:
+                    System.out.println("Insira o nome do pedido");
+                    String nomePedido = scanner.next();
+                    for (int i = 0; i < pedidos.size(); i++){
+                        if (pedidos.get(i).getDescricao().equals(nomePedido)){
+                            pedidos.get(i).setAtivo(false);
+                            String nomeArquivo = "Pedido_"+i+".txt";
+                            String caminhoArquivo = "./";
+                            FileWriter arquivoWriter;
+                            try {
+                                arquivoWriter = new FileWriter(caminhoArquivo + nomeArquivo);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                            BufferedWriter arquivoEscritor = new BufferedWriter(arquivoWriter);
+
+                            try {
+                                arquivoEscritor.write("Nome: "+pedidos.get(i).getPessoa().getNome());
+                                arquivoEscritor.newLine();
+                                arquivoEscritor.write("Endereco: "+pedidos.get(i).getPessoa().getEndereco().get(0).getRua()+" - Número "+pedidos.get(i).getPessoa().getEndereco().get(0).getNumero());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } finally {
+                                try {
+                                    arquivoEscritor.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            System.out.println("Pedido Encerrado e Imprimido");
+                        }
+                    }
                     break;
                 case 0:
                     System.exit(0);
