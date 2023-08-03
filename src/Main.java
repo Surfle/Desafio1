@@ -1,4 +1,5 @@
 import model.Endereco;
+import model.Pedido;
 import model.Pessoa;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         List<Pessoa> chamada = new ArrayList<>();
+        List<Pedido> pedidos = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         Endereco endereco = new Endereco();
 
@@ -18,7 +20,13 @@ public class Main {
 
             System.out.println("1 - Cadastrar");
             System.out.println("2 - Listar");
-            System.out.println("1 - Pesquisar");
+            System.out.println("3 - Pesquisar");
+            System.out.println("4 - Editar");
+            System.out.println("5 - Realizar Pedido");
+            System.out.println("6 - Quantidade de pedidos");
+            System.out.println("7 - Pedidos Ativos");
+            System.out.println("8 - Pedidos Encerrados");
+
             System.out.println("0 - Sair");
             int opcao = scanner.nextInt();
             scanner.nextLine();
@@ -78,6 +86,34 @@ public class Main {
                                     System.out.println("---------------------");                            }
                         }
                     }
+                    break;
+                case 4:
+                    System.out.println("Insira o nome para editar: ");
+                    String pesquisa2 = scanner.next();
+                    for(int i = 0; i < chamada.size(); i++) {
+                        if (pesquisa2.equals(chamada.get(i).getNome())) {
+                            System.out.print("Nome: ");
+                            chamada.get(i).setNome(scanner.next());
+                            System.out.print("Idade: ");
+                            chamada.get(i).setIdade(scanner.nextInt());
+                        }
+                    }
+                    break;
+                case 5:
+                    System.out.println("Insira o nome do cliente: ");
+                    String pesquisa3 = scanner.next();
+                    int cliente_id = -1;
+                    for(int i = 0; i < chamada.size(); i++) {
+                        if (pesquisa3.equals(chamada.get(i).getNome())) {
+                            cliente_id = i;
+                        }
+                    }
+                    System.out.println("Insira o nome do pedido");
+                    String descricao = scanner.next();
+                    pedidos.add(new Pedido (descricao,chamada.get(cliente_id),true));
+                    break;
+                case 6:
+                    System.out.println("Numero de pedidos: "+pedidos.size());
                     break;
                 case 0:
                     System.exit(0);
